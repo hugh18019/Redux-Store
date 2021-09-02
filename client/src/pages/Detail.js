@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 // Import store
-import store from './store';
+import store from '../utils/store';
 
 import Cart from '../components/Cart';
 import { useStoreContext } from '../utils/GlobalState';
@@ -18,20 +18,23 @@ import { idbPromise } from '../utils/helpers';
 import spinner from '../assets/spinner.gif';
 
 // Log every changes in the state
-const unsubscribe = store.subscribe(() =>
-  console.log('State after dispatch: ', store.getState())
-);
+// const unsubscribe = store.subscribe(() =>
+//   console.log('State after dispatch: ', store.getState())
+// );
 
 function Detail() {
   // const [state, dispatch] = useStoreContext();
+
+  // Get state and dispatch from Redux store
+  const [state, dispatch] = store;
+
   const { id } = useParams();
 
   const [currentProduct, setCurrentProduct] = useState({});
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
-  // const { products, cart } = state;
-  const { products, cart } = store.getState();
+  const { products, cart } = state;
 
   useEffect(() => {
     // already in global store
@@ -45,7 +48,7 @@ function Detail() {
       //   products: data.products,
       // });
 
-      store.dispatch({
+      dispatch({
         type: UPDATE_PRODUCTS,
         products: data.products,
       });
@@ -62,7 +65,7 @@ function Detail() {
         //   products: indexedProducts,
         // });
 
-        store.dispatch({
+        dispatch({
           type: UPDATE_PRODUCTS,
           products: indexedProducts,
         });
@@ -79,7 +82,7 @@ function Detail() {
       //   purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
       // });
 
-      store.dispatch({
+      dispatch({
         type: UPDATE_CART_QUANTITY,
         _id: id,
         purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
@@ -95,7 +98,7 @@ function Detail() {
       //   product: { ...currentProduct, purchaseQuantity: 1 },
       // });
 
-      store.dispatch({
+      dispatch({
         type: ADD_TO_CART,
         product: { ...currentProduct, purchaseQuantity: 1 },
       });
@@ -110,7 +113,7 @@ function Detail() {
     //   _id: currentProduct._id,
     // });
 
-    store.dispatch({
+    dispatch({
       type: REMOVE_FROM_CART,
       _id: currentProduct._id,
     });
