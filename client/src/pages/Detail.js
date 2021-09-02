@@ -23,14 +23,15 @@ const unsubscribe = store.subscribe(() =>
 );
 
 function Detail() {
-  const [state, dispatch] = useStoreContext();
+  // const [state, dispatch] = useStoreContext();
   const { id } = useParams();
 
   const [currentProduct, setCurrentProduct] = useState({});
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
-  const { products, cart } = state;
+  // const { products, cart } = state;
+  const { products, cart } = store.getState();
 
   useEffect(() => {
     // already in global store
