@@ -39,7 +39,12 @@ function Detail() {
     }
     // retrieved from server
     else if (data) {
-      dispatch({
+      // dispatch({
+      //   type: UPDATE_PRODUCTS,
+      //   products: data.products,
+      // });
+
+      store.dispatch({
         type: UPDATE_PRODUCTS,
         products: data.products,
       });
@@ -51,7 +56,12 @@ function Detail() {
     // get cache from idb
     else if (!loading) {
       idbPromise('products', 'get').then((indexedProducts) => {
-        dispatch({
+        // dispatch({
+        //   type: UPDATE_PRODUCTS,
+        //   products: indexedProducts,
+        // });
+
+        store.dispatch({
           type: UPDATE_PRODUCTS,
           products: indexedProducts,
         });
@@ -62,26 +72,44 @@ function Detail() {
   const addToCart = () => {
     const itemInCart = cart.find((cartItem) => cartItem._id === id);
     if (itemInCart) {
-      dispatch({
+      // dispatch({
+      //   type: UPDATE_CART_QUANTITY,
+      //   _id: id,
+      //   purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
+      // });
+
+      store.dispatch({
         type: UPDATE_CART_QUANTITY,
         _id: id,
         purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
       });
+
       idbPromise('cart', 'put', {
         ...itemInCart,
         purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
       });
     } else {
-      dispatch({
+      // dispatch({
+      //   type: ADD_TO_CART,
+      //   product: { ...currentProduct, purchaseQuantity: 1 },
+      // });
+
+      store.dispatch({
         type: ADD_TO_CART,
         product: { ...currentProduct, purchaseQuantity: 1 },
       });
+
       idbPromise('cart', 'put', { ...currentProduct, purchaseQuantity: 1 });
     }
   };
 
   const removeFromCart = () => {
-    dispatch({
+    // dispatch({
+    //   type: REMOVE_FROM_CART,
+    //   _id: currentProduct._id,
+    // });
+
+    store.dispatch({
       type: REMOVE_FROM_CART,
       _id: currentProduct._id,
     });
