@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { createStore } from 'redux';
-import reducer from '../utils/reduxReducers';
+// Import store
+import store from './store';
 
 import Cart from '../components/Cart';
 import { useStoreContext } from '../utils/GlobalState';
@@ -16,6 +16,11 @@ import {
 import { QUERY_PRODUCTS } from '../utils/queries';
 import { idbPromise } from '../utils/helpers';
 import spinner from '../assets/spinner.gif';
+
+// Log every changes in the state
+const unsubscribe = store.subscribe(() =>
+  console.log('State after dispatch: ', store.getState())
+);
 
 function Detail() {
   const [state, dispatch] = useStoreContext();
